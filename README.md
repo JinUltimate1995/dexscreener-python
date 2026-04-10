@@ -5,9 +5,10 @@
 
   <br/>
 
-  <img src="https://img.shields.io/github/actions/workflow/status/JinUltimate1995/dexscreener-python/ci.yml?branch=main&style=flat-square&label=tests" />
-  <img src="https://img.shields.io/pypi/v/dexscreener-python?style=flat-square" />
+  <a href="https://github.com/JinUltimate1995/dexscreener-python/actions"><img src="https://img.shields.io/github/actions/workflow/status/JinUltimate1995/dexscreener-python/ci.yml?branch=main&style=flat-square&label=tests" /></a>
+  <a href="https://pypi.org/project/dexscreener-python/"><img src="https://img.shields.io/pypi/v/dexscreener-python?style=flat-square" /></a>
   <img src="https://img.shields.io/pypi/pyversions/dexscreener-python?style=flat-square" />
+  <img src="https://img.shields.io/badge/typed-py.typed-blue?style=flat-square" />
   <img src="https://img.shields.io/badge/async-first-blue?style=flat-square" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" />
 </div>
@@ -16,7 +17,7 @@
 
 > extracted from a production trading system. handles rate limits gracefully.
 
-## why
+## 🛡️ Why this library?
 
 dexscreener's api is free and powerful, but:
 
@@ -41,7 +42,7 @@ async with DexScreenerClient() as client:
 duplicate requests → deduplicated into one HTTP call.
 results → cached with configurable TTL.
 
-## install
+## 📦 Install
 
 ```bash
 pip install dexscreener-python
@@ -49,7 +50,7 @@ pip install dexscreener-python
 
 requires python 3.11+
 
-## features
+## ⚡ Features
 
 | feature | description |
 |---|---|
@@ -60,9 +61,9 @@ requires python 3.11+
 | **batch support** | fetch up to 30 tokens in a single request |
 | **typed data** | `DexPairData` dataclass with computed properties (buy/sell ratio, age, etc.) |
 
-## usage
+## 🔧 Usage
 
-### token pairs
+### 💰 Token Pairs
 
 ```python
 pairs = await client.get_token_pairs("solana", token_address)
@@ -75,14 +76,14 @@ print(f"Buy/Sell 5m: {best_pair.buy_sell_ratio_5m:.2f}")
 print(f"Age: {best_pair.pair_age_seconds // 3600}h")
 ```
 
-### token price
+### 💵 Token Price
 
 ```python
 price = await client.get_token_price("solana", token_address)
 print(f"${price}")
 ```
 
-### batch fetch (up to 30 tokens)
+### 📦 Batch Fetch (up to 30 tokens)
 
 ```python
 data = await client.get_tokens_batch("solana", [addr1, addr2, addr3])
@@ -90,7 +91,7 @@ for addr, pair in data.items():
     print(f"{pair.base_token_symbol}: ${pair.price_usd}")
 ```
 
-### search
+### 🔍 Search
 
 ```python
 results = await client.search_pairs("BONK")
@@ -98,21 +99,21 @@ for pair in results:
     print(f"{pair.base_token_symbol} on {pair.dex_id}: ${pair.price_usd}")
 ```
 
-### boosted tokens
+### 🚀 Boosted Tokens
 
 ```python
 boosted = await client.get_boosted_tokens("solana")
 # boosted tokens are paid promotions — treat with caution
 ```
 
-### specific pair
+### 🎯 Specific Pair
 
 ```python
 pair = await client.get_pair_by_address("solana", pair_address)
 print(f"{pair.dex_id}: ${pair.price_usd}")
 ```
 
-## DexPairData
+## 📋 DexPairData
 
 all methods return `DexPairData` objects with these fields:
 
@@ -141,7 +142,7 @@ computed properties:
 | `has_liquidity` | True if liquidity > $1000 |
 | `pair_age_seconds` | pair age in seconds |
 
-## configuration
+## ⚙️ Configuration
 
 ```python
 client = DexScreenerClient(
@@ -150,13 +151,27 @@ client = DexScreenerClient(
 )
 ```
 
-## license
+---
+
+## 🆚 Comparison
+
+| | dexscreener-python | raw `httpx` / `requests` |
+|---|---|---|
+| Rate limiting | ✅ adaptive token bucket | ❌ manual |
+| 429 retry | ✅ exponential backoff | ❌ crash |
+| Global cooldown | ✅ one 429 pauses all | ❌ per-request only |
+| Response cache | ✅ TTL + dedup | ❌ manual |
+| Typed data | ✅ `DexPairData` dataclass | ❌ raw dicts |
+| Batch support | ✅ up to 30 tokens | ❌ manual loop |
+| Async | ✅ native | depends |
+
+## License
 
 MIT
 
 ---
 
-## also by JinUltimate1995
+## 📦 Also by JinUltimate1995
 
 - **[jupiter-swap-python](https://github.com/JinUltimate1995/jupiter-swap-python)** — Jupiter swap client for Python. Async. Typed.
 - **[pumpfun-python](https://github.com/JinUltimate1995/pumpfun-python)** — PumpFun bonding curve + PumpSwap AMM. Direct swaps from Python.
